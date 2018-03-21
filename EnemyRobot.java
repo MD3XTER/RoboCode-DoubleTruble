@@ -13,7 +13,6 @@ public class EnemyRobot implements Serializable {
     private double bearing;
     private double distance;
     private double energy;
-    private double angle;
     private double heading;
     private double velocity;
     private double x;
@@ -35,8 +34,6 @@ public class EnemyRobot implements Serializable {
         double absoluteBearing = normalAbsoluteAngleDegrees(robot.getHeading() + e.getBearing());
         x = robot.getX() + e.getDistance() * Math.sin(Math.toRadians(absoluteBearing));
         y = robot.getY() + e.getDistance() * Math.cos(Math.toRadians(absoluteBearing));
-        angle = normalRelativeAngleDegrees(90 - heading);
-        System.out.printf("angle: %.2f\n", angle);
     }
 
     public void updateRelativeToTheRobot(Robot robot) {
@@ -97,17 +94,17 @@ public class EnemyRobot implements Serializable {
 
     public double getPredictedX(double time) {
         double distance = time * velocity;
+        predictedX = x + distance * Math.sin(getHeading());
         System.out.printf("distance X: %.2f\n", distance);
-        predictedX = Math.sin(angle);
-        predictedX = x + distance * predictedX;
+        System.out.printf("Predicted X in 1 second: %.2f\n", predictedX);
         return predictedX;
     }
 
     public double getPredictedY(double time) {
         double distance = time * velocity;
+        predictedY = y + distance * Math.cos(getHeading());
         System.out.printf("distance Y: %.2f\n", distance);
-        predictedY = Math.cos(angle);
-        predictedY = y + distance * predictedY;
+        System.out.printf("Predicted Y in 1 second: %.2f\n", predictedY);
         return predictedY;
     }
 
