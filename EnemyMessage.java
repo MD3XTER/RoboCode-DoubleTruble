@@ -3,13 +3,13 @@ package nl.saxion.zgirvaci;
 import java.io.Serializable;
 
 public class EnemyMessage implements Serializable{
-    EnemyRobot enemyToFollow;
+    EnemyRobot enemy;
 
     public EnemyMessage(EnemyRobot enemyRobot) {
-        enemyToFollow = enemyRobot;
+        enemy = enemyRobot;
     }
 
-    public EnemyRobot getEnemyToFollow() {
-        return enemyToFollow;
+    public EnemyRobot getEnemy() {
+        return enemy;
     }
 }

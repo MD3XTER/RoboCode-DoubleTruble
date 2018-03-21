@@ -2,9 +2,13 @@ package nl.saxion.zgirvaci;
 
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
-import static robocode.util.Utils.normalAbsoluteAngleDegrees;
 
-public class EnemyRobot {
+import java.io.Serializable;
+
+import static robocode.util.Utils.normalAbsoluteAngleDegrees;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
+
+public class EnemyRobot implements Serializable {
     private String name;
     private double bearing;
     private double distance;
@@ -28,6 +32,14 @@ public class EnemyRobot {
         double absoluteBearing = normalAbsoluteAngleDegrees(robot.getHeading() + e.getBearing());
         x = robot.getX() + e.getDistance() * Math.sin(Math.toRadians(absoluteBearing));
         y = robot.getY() + e.getDistance() * Math.cos(Math.toRadians(absoluteBearing));
+    }
+
+    public void updateRelativeToTheRobot(Robot robot) {
+        double x0 = x-robot.getX();
+        double y0 = y-robot.getY();
+        bearing = Math.toDegrees(Math.atan2(x0, y0));
+        bearing = normalRelativeAngleDegrees(0 - robot.getHeading() + bearing);
+        distance = Math.sqrt(Math.pow(x0, 2) + Math.pow(y0, 2));
     }
 
     public void reset() {
