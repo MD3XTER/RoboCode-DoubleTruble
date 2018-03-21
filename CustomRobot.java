@@ -17,6 +17,8 @@ abstract class CustomRobot extends TeamRobot {
 //          turn gun to enemy
             setTurnGunRight(bearingFromGun);
 
+            followEnemy();
+
 //          fire after gun has turned to the enemy
             final double ERROR_MARGIN = 1.0;
             if (Math.abs(getGunTurnRemaining()) <= ERROR_MARGIN) {
@@ -28,18 +30,20 @@ abstract class CustomRobot extends TeamRobot {
 //              wait until gun heat is 0
                 if (getGunHeat() == 0.0) {
                     setFire(bullets);
-                } else {
-//                    followEnemy();
                 }
             }
         }
     }
 
     public void followEnemy() {
-        final double CLOSE_MARGIN = 200.0;
+        final double CLOSE_MARGIN = 100.0;
 
 //      head towards the enemy
+        final double ERROR_MARGIN = 25.0;
         setTurnRight(enemy.getBearing());
+        if (Math.abs(getTurnRemaining()) <= ERROR_MARGIN) {
+            setTurnRight(0.0);
+        }
 
 //      move towards the enemy with a close margin
         setAhead(enemy.getDistance() - CLOSE_MARGIN);
