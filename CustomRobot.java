@@ -19,6 +19,11 @@ abstract class CustomRobot extends TeamRobot {
 
             followEnemy();
 
+            System.out.printf("Current X: %.2f\n", enemy.getX());
+            System.out.printf("Current Y: %.2f\n", enemy.getY());
+            System.out.printf("Predicted X in 1 second: %.2f\n", enemy.getPredictedX(1));
+            System.out.printf("Predicted Y in 1 second: %.2f\n", enemy.getPredictedY(1));
+
 //          fire after gun has turned to the enemy
             final double ERROR_MARGIN = 1.0;
             if (Math.abs(getGunTurnRemaining()) <= ERROR_MARGIN) {

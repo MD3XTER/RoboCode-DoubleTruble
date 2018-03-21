@@ -13,10 +13,13 @@ public class EnemyRobot implements Serializable {
     private double bearing;
     private double distance;
     private double energy;
+    private double angle;
     private double heading;
     private double velocity;
     private double x;
     private double y;
+    private double predictedX;
+    private double predictedY;
 
     public EnemyRobot() {
         reset();
@@ -32,13 +35,16 @@ public class EnemyRobot implements Serializable {
         double absoluteBearing = normalAbsoluteAngleDegrees(robot.getHeading() + e.getBearing());
         x = robot.getX() + e.getDistance() * Math.sin(Math.toRadians(absoluteBearing));
         y = robot.getY() + e.getDistance() * Math.cos(Math.toRadians(absoluteBearing));
+        angle = normalRelativeAngleDegrees(90 - heading);
+        System.out.printf("angle: %.2f\n", angle);
     }
 
     public void updateRelativeToTheRobot(Robot robot) {
         double x0 = x-robot.getX();
         double y0 = y-robot.getY();
-        bearing = Math.toDegrees(Math.atan2(x0, y0));
-        bearing = normalRelativeAngleDegrees(0 - robot.getHeading() + bearing);
+        double bearingFromTheNorth = Math.toDegrees(Math.atan2(x0, y0));
+        double absoluteBearing = bearingFromTheNorth - robot.getHeading();
+        bearing = normalRelativeAngleDegrees(absoluteBearing);
         distance = Math.sqrt(Math.pow(x0, 2) + Math.pow(y0, 2));
     }
 
@@ -88,4 +94,21 @@ public class EnemyRobot implements Serializable {
     public double getY() {
         return y;
     }
+
+    public double getPredictedX(double time) {
+        double distance = time * velocity;
+        System.out.printf("distance X: %.2f\n", distance);
+        predictedX = Math.sin(angle);
+        predictedX = x + distance * predictedX;
+        return predictedX;
+    }
+
+    public double getPredictedY(double time) {
+        double distance = time * velocity;
+        System.out.printf("distance Y: %.2f\n", distance);
+        predictedY = Math.cos(angle);
+        predictedY = y + distance * predictedY;
+        return predictedY;
+    }
+
 }
