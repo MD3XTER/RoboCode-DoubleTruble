@@ -6,6 +6,8 @@ public class FirstRobot extends Leader{
         setAdjustGunForRobotTurn(true);
         setAdjustRadarForGunTurn(true);
 
+        setFollower("SecondRobot");
+
         while (true) {
 //          start scanning
             setTurnRadarRight(360);
