@@ -1,4 +1,4 @@
-package nl.saxion.zgirvaci;
+package nl.saxion.DHI1VSq3;
 
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;

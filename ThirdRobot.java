@@ -1,4 +1,4 @@
-package nl.saxion.zgirvaci;
+package nl.saxion.DHI1VSq3;
 
 import java.awt.*;
 
