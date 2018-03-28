@@ -1,4 +1,4 @@
-package nl.saxion.DHI1VSq3;
+package nl.saxion.dhi1vsq3;
 
 import java.awt.*;
 
@@ -15,6 +15,11 @@ public class SecondRobot extends Follower{
         setRadarColor(new Color(0, 0, 255));
 
         while (true) {
+            if (isTakeLead()) {
+//              start scanning if leader is dead
+                setTurnRadarRight(360);
+            }
+
 //          attack enemy
             attackEnemy();
 

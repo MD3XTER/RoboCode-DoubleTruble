@@ -1,4 +1,4 @@
-package nl.saxion.DHI1VSq3;
+package nl.saxion.dhi1vsq3;
 
 import robocode.TeamRobot;
 

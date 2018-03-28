@@ -1,5 +1,6 @@
-package nl.saxion.DHI1VSq3;
+package nl.saxion.dhi1vsq3;
 
+import robocode.DeathEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 
@@ -10,11 +11,16 @@ abstract class Leader extends CustomRobot {
 
     public void setFollower(String follower) {
         this.follower = findTeammate(follower);
+        try {
+            sendMessage(follower, new TakeLead());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onScannedRobot(ScannedRobotEvent e) {
-//      check if is a enemy robot
+//      check if scanned robot is enemy
         if (!isTeammate(e.getName())){
 //          update enemy if it is different or closer
             if (getEnemy().none() || e.getDistance() < getEnemy().getDistance() || e.getName().equals(getEnemy().getName())) {
@@ -28,6 +34,16 @@ abstract class Leader extends CustomRobot {
                     e1.printStackTrace();
                 }
             }
+        }
+    }
+
+    @Override
+    public void onDeath(DeathEvent event) {
+//      send a message to follower that he should take the lead
+        try {
+            sendMessage(follower, new TakeLead());
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 
