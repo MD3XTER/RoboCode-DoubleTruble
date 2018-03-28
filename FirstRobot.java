@@ -9,18 +9,19 @@ public class FirstRobot extends Leader{
         setAdjustRadarForGunTurn(true);
 
 //      set color
-        setGunColor(new Color(255, 0, 0));
-        setBodyColor(new Color(255, 0, 0));
-        setScanColor(new Color(255, 0, 0));
-        setRadarColor(new Color(255, 0, 0));
+        setGunColor(new Color(217, 250, 27));
+        setBodyColor(new Color(163, 8, 29));
+        setScanColor(new Color(230, 0, 0));
+        setRadarColor(new Color(0,0,0));
 
-        setFollower("SecondRobot");
+        setFollower("SecondRobot", "ThirdRobot");
 
         while (true) {
 //          scan for enemies
             setTurnRadarRight(360);
 
-//          attack enemy
+            moveToEnemy();
+
             attackEnemy();
 
             execute();

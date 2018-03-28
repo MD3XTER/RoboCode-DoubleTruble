@@ -9,18 +9,17 @@ public class SecondRobot extends Follower{
         setAdjustRadarForGunTurn(true);
 
 //      set color
-        setGunColor(new Color(0, 0, 255));
-        setBodyColor(new Color(0, 0, 255));
-        setScanColor(new Color(0, 0, 255));
-        setRadarColor(new Color(0, 0, 255));
+        setGunColor(new Color(51, 102, 0));
+        setBodyColor(new Color(102, 102, 51));
+        setScanColor(new Color(51, 102, 0));
+        setRadarColor(new Color(0, 0, 0));
 
         while (true) {
-            if (isTakeLead()) {
-//              start scanning if leader is dead
-                setTurnRadarRight(360);
-            }
+//          scan for enemies
+            setTurnRadarRight(360);
 
-//          attack enemy
+            moveToEnemy();
+
             attackEnemy();
 
             execute();
