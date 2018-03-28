@@ -31,8 +31,10 @@ public abstract class Follower extends CustomRobot {
 
     @Override
     public void onMessageReceived(MessageEvent event) {
+        System.out.printf("message: %s\n", event.getMessage());
+
 //      if leader send enemy location
-        if (event.getMessage() instanceof EnemyMessage && !takeLead) {
+        if (event.getMessage() instanceof EnemyMessage) {
 //          get enemy from the leader
             EnemyRobot enemy = ((EnemyMessage) event.getMessage()).getEnemy();
 //          update enemy relative to this robot
@@ -41,9 +43,9 @@ public abstract class Follower extends CustomRobot {
             setEnemy(enemy);
         }
 //      if a leader message me about my team
-        if (event.getMessage() instanceof TakeLeadMessage) {
-            takeLead = ((TakeLeadMessage) event.getMessage()).isTakeLead();
-            System.out.printf("takeLead: %b\n", takeLead);
+        else if (event.getMessage() instanceof TakeLeadMessage) {
+            this.takeLead = ((TakeLeadMessage) event.getMessage()).isTakeLead();
+            System.out.printf("takeLead: %b\n", this.takeLead);
         }
     }
 }

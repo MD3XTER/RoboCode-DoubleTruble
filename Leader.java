@@ -15,7 +15,7 @@ abstract class Leader extends CustomRobot {
     public void setFollower(String follower, String otherLeader) {
         this.follower = findTeammate(follower);
         this.otherLeader = findTeammate(otherLeader);
-        robotWhoWantsToJoin = "";
+        this.robotWhoWantsToJoin = "";
     }
 
     @Override
@@ -46,43 +46,42 @@ abstract class Leader extends CustomRobot {
         }
     }
 
-    @Override
-    public void onMessageReceived(MessageEvent event) {
-//      if other leader died
-        if (event.getMessage() instanceof JoinTeamMessage) {
-//          set robot who wants to join this team
-            robotWhoWantsToJoin = ((JoinTeamMessage) event.getMessage()).getRobotWhoWantsToJoin();
-            System.out.printf("Robot who want's to join: %s", robotWhoWantsToJoin);
-        }
-        else if (event.getMessage() instanceof GetFollowerMessage) {
-            if (robotWhoWantsToJoin.isEmpty()) {
-                GetFollowerMessage getFollowerMessage = (GetFollowerMessage) event.getMessage();
-                getFollowerMessage.setLeaderFollower(follower);
-                System.out.printf("I have sent my follower %s", follower);
-            }
-            else {
-                robotWhoWantsToJoin = ((GetFollowerMessage) event.getMessage()).getLeaderFollower();
-                System.out.printf("Robot who want's to join: %s", robotWhoWantsToJoin);
-            }
-        }
-    }
+//    @Override
+//    public void onMessageReceived(MessageEvent event) {
+////      if other leader died
+//        if (event.getMessage() instanceof JoinTeamMessage) {
+////          set robot who wants to join this team
+//            this.robotWhoWantsToJoin = ((JoinTeamMessage) event.getMessage()).getRobotWhoWantsToJoin();
+//            System.out.printf("Robot who want's to join: %s", this.robotWhoWantsToJoin);
+//        }
+//        else if (event.getMessage() instanceof GetFollowerMessage) {
+//            if (this.robotWhoWantsToJoin.isEmpty()) {
+//                GetFollowerMessage getFollowerMessage = (GetFollowerMessage) event.getMessage();
+//                getFollowerMessage.setLeaderFollower(this.follower);
+//                System.out.printf("I have sent my follower %s", this.follower);
+//            }
+//            else {
+//                this.robotWhoWantsToJoin = ((GetFollowerMessage) event.getMessage()).getLeaderFollower();
+//                System.out.printf("Robot who want's to join: %s", this.robotWhoWantsToJoin);
+//            }
+//        }
+//    }
 
     @Override
     public void onDeath(DeathEvent event) {
 //      send a message to follower that he should take the lead
         try {
-            sendMessage(follower, new TakeLeadMessage(true));
-            System.out.printf("I %s am dying\n", this.getName());
-        } catch (IOException e1) {
-            e1.printStackTrace();
+            sendMessage(this.follower, new TakeLeadMessage(true));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-//      send a message to the other leader that my follower want's to join his team
-        try {
-            sendMessage(otherLeader, new JoinTeamMessage(follower));
-            System.out.printf("I have sent %s that %s should join him\n", otherLeader, follower);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+////      send a message to the other leader that my follower want's to join his team
+//        try {
+//            sendMessage(this.otherLeader, new JoinTeamMessage(this.follower));
+//            System.out.printf("I have sent %s that %s should join him\n", this.otherLeader, this.follower);
+//        } catch (IOException e1) {
+//            e1.printStackTrace();
+//        }
     }
 
     @Override
@@ -91,28 +90,28 @@ abstract class Leader extends CustomRobot {
         if (e.getName().equals(getEnemy().getName())) {
             getEnemy().reset();
         }
-//      set new follower if current follower is dead
-        else if (e.getName().equals(follower)) {
-            System.out.printf("My follower died: %s\n", follower);
-//          if the other leader is dead
-            if (robotWhoWantsToJoin.isEmpty()) {
-                follower = robotWhoWantsToJoin;
-                try {
-                    sendMessage(robotWhoWantsToJoin, new TakeLeadMessage(false));
-                    System.out.printf("My new follower is: %s\n", robotWhoWantsToJoin);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-//          if the other leader is alive
-            else {
-                try {
-                    sendMessage(otherLeader, new GetFollowerMessage());
-                    System.out.printf("I have requested from %s his follower\n", otherLeader);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
+////      set new follower if current follower is dead
+//        else if (e.getName().equals(this.follower)) {
+//            System.out.printf("My follower died: %s\n", this.follower);
+////          if the other leader is dead
+//            if (this.robotWhoWantsToJoin.isEmpty())  {
+//                this.follower = this.robotWhoWantsToJoin;
+//                try {
+//                    sendMessage(this.robotWhoWantsToJoin, new TakeLeadMessage(false));
+//                    System.out.printf("My new follower is: %s\n", this.robotWhoWantsToJoin);
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
+////          if the other leader is alive
+//            else {
+//                try {
+//                    sendMessage(this.otherLeader, new GetFollowerMessage());
+//                    System.out.printf("I have requested from %s his follower\n", this.otherLeader);
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
+//        }
     }
 }
