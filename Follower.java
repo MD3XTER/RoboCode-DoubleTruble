@@ -10,42 +10,50 @@ public abstract class Follower extends CustomRobot {
     @Override
     public void onScannedRobot(ScannedRobotEvent e) {
         final double ERROR_MARGIN = 50.0;
-        double bearingFromGun = getGunBearing(e.getBearing());
+        double bearingFromEventRobotGun = getGunBearing(e.getBearing());
+        double bearingFromRangeRobotGun = getGunBearing(getRobotInRange().getBearing());
 
-//      check if scanned robot is ally
-        if (isTeammate(e.getName()) && Math.abs(bearingFromGun) <= ERROR_MARGIN) {
-            setStrafing(true);
+
+        if (e.getDistance() < getRobotInRange().getDistance() && (Math.abs(bearingFromEventRobotGun) < Math.abs(bearingFromRangeRobotGun))) {
+                getRobotInRange().update(e, this);
         }
+
+        if (Math.abs(bearingFromRangeRobotGun) > ERROR_MARGIN) {
+                getRobotInRange().reset();
+        }
+
 //      check if scanned robot is enemy
-        else if (!isTeammate(e.getName())) {
+        if (!isTeammate(e.getName())) {
 //          update enemy if it is different or closer
             if ((getEnemy().none() || e.getDistance() < getEnemy().getDistance() || e.getName().equals(getEnemy().getName())) && takeLead) {
 //              update enemy
                 getEnemy().update(e, this);
             }
-
-            setStrafing(false);
-            attackEnemy();
+//          check if scanned robot is ally
+            if (isTeammate(getRobotInRange().getName())) {
+                setStrafing(true);
+            }
+            else {
+                setStrafing(false);
+                attackEnemy();
+            }
         }
     }
 
     @Override
     public void onMessageReceived(MessageEvent event) {
-        System.out.printf("message: %s\n", event.getMessage());
-
 //      if leader send enemy location
-        if (event.getMessage() instanceof EnemyMessage) {
+        if (event.getMessage() instanceof EnemyMessage && !takeLead) {
 //          get enemy from the leader
-            EnemyRobot enemy = ((EnemyMessage) event.getMessage()).getEnemy();
+            ScannedRobot enemy = ((EnemyMessage) event.getMessage()).getEnemy();
 //          update enemy relative to this robot
             enemy.updateRelativeToTheRobot(this);
 //          update enemy
             setEnemy(enemy);
         }
-//      if a leader message me about my team
+//      if leader is dead
         else if (event.getMessage() instanceof TakeLeadMessage) {
-            this.takeLead = ((TakeLeadMessage) event.getMessage()).isTakeLead();
-            System.out.printf("takeLead: %b\n", this.takeLead);
+            this.takeLead = true;
         }
     }
 }

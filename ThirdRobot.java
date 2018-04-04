@@ -1,5 +1,7 @@
 package nl.saxion.dhi1vsq3;
 
+import robocode.Condition;
+
 import java.awt.*;
 
 public class ThirdRobot extends Leader{
@@ -14,7 +16,13 @@ public class ThirdRobot extends Leader{
         setScanColor(new Color(230, 0, 0));
         setRadarColor(new Color(0,0,0));
 
-        setFollower("FourthRobot", "FirstRobot");
+        addCustomEvent(new Condition("make_follower_individual") {
+            public boolean test() {
+                return (getEnergy() <= 20);
+            }
+        });
+
+        setFollower("FourthRobot");
 
         while (true) {
 //          scan for enemies

@@ -8,7 +8,7 @@ import java.io.Serializable;
 import static robocode.util.Utils.normalAbsoluteAngleDegrees;
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
-public class EnemyRobot implements Serializable {
+public class ScannedRobot implements Serializable {
     private String name;
     private double bearing;
     private double distance;
@@ -20,7 +20,7 @@ public class EnemyRobot implements Serializable {
     private double predictedX;
     private double predictedY;
 
-    public EnemyRobot() {
+    public ScannedRobot() {
         reset();
     }
 

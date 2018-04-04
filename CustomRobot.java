@@ -1,21 +1,21 @@
 package nl.saxion.dhi1vsq3;
 
+import robocode.RobotDeathEvent;
 import robocode.TeamRobot;
 
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 abstract class CustomRobot extends TeamRobot {
-    private EnemyRobot enemy = new EnemyRobot();
+    private ScannedRobot enemy = new ScannedRobot();
+    private ScannedRobot robotInRange = new ScannedRobot();
     private byte moveDirection = 1;
     private boolean strafing = false;
 
     public void attackEnemy() {
 //      check if there is actually an enemy
         if (!enemy.none()) {
-            double bearingFromGun = getGunBearing(enemy.getBearing());
-
 //          turn gun to enemy
-            setTurnGunRight(bearingFromGun);
+            setTurnGunRight(getGunBearing(enemy.getBearing()));
 
 //            System.out.printf("Current X: %.2f\n", enemy.getX());
 //            System.out.printf("Current Y: %.2f\n", enemy.getY());
@@ -42,7 +42,7 @@ abstract class CustomRobot extends TeamRobot {
 
         if (strafing) {
 //          switch directions if we've stopped
-            if (getVelocity() == 0)
+            if (Math.abs(getVelocity()) <= 0)
                 moveDirection *= -1;
 
 //          circle our enemy
@@ -78,12 +78,28 @@ abstract class CustomRobot extends TeamRobot {
         return null;
     }
 
-    public EnemyRobot getEnemy() {
+    @Override
+    public void onRobotDeath(RobotDeathEvent e) {
+//      delete enemy after killed
+        if (e.getName().equals(getEnemy().getName())) {
+            System.out.printf("%s should be dead\n", getEnemy().getName());
+            getEnemy().reset();
+        }
+        if (e.getName().equals(getRobotInRange().getName())) {
+            getRobotInRange().reset();
+        }
+    }
+
+    public ScannedRobot getEnemy() {
         return enemy;
     }
 
-    public void setEnemy(EnemyRobot enemyRobot) {
-        enemy = enemyRobot;
+    public ScannedRobot getRobotInRange() {
+        return robotInRange;
+    }
+
+    public void setEnemy(ScannedRobot scannedRobot) {
+        enemy = scannedRobot;
     }
 
     public void setStrafing(boolean strafing) {

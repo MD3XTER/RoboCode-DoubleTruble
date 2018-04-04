@@ -3,13 +3,13 @@ package nl.saxion.dhi1vsq3;
 import java.io.Serializable;
 
 public class EnemyMessage implements Serializable{
-    EnemyRobot enemy;
+    ScannedRobot enemy;
 
-    public EnemyMessage(EnemyRobot enemyRobot) {
-        enemy = enemyRobot;
+    public EnemyMessage(ScannedRobot scannedRobot) {
+        enemy = scannedRobot;
     }
 
-    public EnemyRobot getEnemy() {
+    public ScannedRobot getEnemy() {
         return enemy;
     }
 }
