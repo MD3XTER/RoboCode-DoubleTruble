@@ -25,7 +25,6 @@ public class FirstRobot extends Leader{
         setFollower("SecondRobot");
 
         while (true) {
-//          scan for enemies
             setTurnRadarRight(360);
 
             moveToEnemy();

@@ -17,8 +17,6 @@ public class ScannedRobot implements Serializable {
     private double velocity;
     private double x;
     private double y;
-    private double predictedX;
-    private double predictedY;
 
     public ScannedRobot() {
         reset();
@@ -90,22 +88,6 @@ public class ScannedRobot implements Serializable {
 
     public double getY() {
         return y;
-    }
-
-    public double getPredictedX(double time) {
-        double distance = time * velocity;
-        predictedX = x + distance * Math.sin(getHeading());
-        System.out.printf("distance X: %.2f\n", distance);
-        System.out.printf("Predicted X in 1 second: %.2f\n", predictedX);
-        return predictedX;
-    }
-
-    public double getPredictedY(double time) {
-        double distance = time * velocity;
-        predictedY = y + distance * Math.cos(getHeading());
-        System.out.printf("distance Y: %.2f\n", distance);
-        System.out.printf("Predicted Y in 1 second: %.2f\n", predictedY);
-        return predictedY;
     }
 
 }

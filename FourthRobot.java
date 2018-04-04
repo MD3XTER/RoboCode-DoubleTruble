@@ -15,7 +15,6 @@ public class FourthRobot extends Follower{
         setRadarColor(new Color(0, 0, 0));
 
         while (true) {
-//          scan for enemies
             setTurnRadarRight(360);
 
             moveToEnemy();

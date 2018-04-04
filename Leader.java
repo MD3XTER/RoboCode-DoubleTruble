@@ -14,34 +14,33 @@ abstract class Leader extends CustomRobot {
 
     @Override
     public void onScannedRobot(ScannedRobotEvent e) {
-        final double ERROR_MARGIN = 50.0;
+        final double SAFE_MARGIN = 100.0;
         double bearingFromEventRobotGun = getGunBearing(e.getBearing());
         double bearingFromRangeRobotGun = getGunBearing(getRobotInRange().getBearing());
 
-
-        if (e.getDistance() < getRobotInRange().getDistance() && (Math.abs(bearingFromEventRobotGun) < Math.abs(bearingFromRangeRobotGun))) {
+        if (e.getDistance() < getRobotInRange().getDistance() && (Math.abs(bearingFromEventRobotGun) < SAFE_MARGIN)) {
             getRobotInRange().update(e, this);
         }
 
-        if (Math.abs(bearingFromRangeRobotGun) > ERROR_MARGIN) {
+        if (Math.abs(bearingFromRangeRobotGun) > SAFE_MARGIN) {
             getRobotInRange().reset();
         }
 
-//      check if scanned robot is enemy
+        // check if scanned robot is enemy
         if (!isTeammate(e.getName())) {
-//          update enemy if it is different or closer
+            // update enemy if it is different or closer
             if (getEnemy().none() || e.getDistance() < getEnemy().getDistance() || e.getName().equals(getEnemy().getName())) {
-//              update enemy
+                // update enemy
                 getEnemy().update(e, this);
 
-//              send the enemyToFollow to the enemy
+                // send the enemyToFollow to the enemy
                 try {
                     sendMessage(follower, new EnemyMessage(getEnemy()));
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
-//          check if scanned robot is ally
+            // check if scanned robot is ally
             if (isTeammate(getRobotInRange().getName())) {
                 setStrafing(true);
             }
@@ -54,7 +53,7 @@ abstract class Leader extends CustomRobot {
 
     public void onCustomEvent(CustomEvent e) {
         if (e.getCondition().getName().equals("make_follower_individual")) {
-//          send a message to my follower that he should become individual
+            // send a message to my follower that he should become individual
             try {
                 sendMessage(this.follower, new TakeLeadMessage());
             } catch (IOException e1) {
