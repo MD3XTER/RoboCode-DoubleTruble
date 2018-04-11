@@ -22,6 +22,11 @@ public class ScannedRobot implements Serializable {
         reset();
     }
 
+    /**
+     * This function takes two parameters, and initiate a robot object
+     * @param e - scanned robot
+     * @param robot - robot that scanned that robot
+     */
     public void update(ScannedRobotEvent e, Robot robot) {
         name = e.getName();
         bearing = e.getBearing();
@@ -29,11 +34,16 @@ public class ScannedRobot implements Serializable {
         energy = e.getEnergy();
         heading = e.getHeading();
         velocity = e.getVelocity();
+        // calculate absolute bearing of this robot relative to the robot calling this function
         double absoluteBearing = normalAbsoluteAngleDegrees(robot.getHeading() + e.getBearing());
         x = robot.getX() + e.getDistance() * Math.sin(Math.toRadians(absoluteBearing));
         y = robot.getY() + e.getDistance() * Math.cos(Math.toRadians(absoluteBearing));
     }
 
+    /**
+     * This function update robot object with data relative to the robot parameter
+     * @param robot - robot that scanned that robot
+     */
     public void updateRelativeToTheRobot(Robot robot) {
         double x0 = x-robot.getX();
         double y0 = y-robot.getY();
@@ -43,6 +53,9 @@ public class ScannedRobot implements Serializable {
         distance = Math.sqrt(Math.pow(x0, 2) + Math.pow(y0, 2));
     }
 
+    /**
+     * This function reset object with default values
+     */
     public void reset() {
         name = "";
         bearing = 0.0;
