@@ -54,7 +54,7 @@ public class ScannedRobot implements Serializable {
         y = 0.0;
     }
 
-    public boolean none() {
+    public boolean isEmpty() {
         return name.equals("");
     }
 
